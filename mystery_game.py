@@ -23,8 +23,8 @@ Important design notes:
 - This version has NO witness reveal and NO separate cases.
 """
 """
-Student 1:
-Spire Id:
+Student 1:Seta Tah
+Spire Id:35079371
 
 Student 2: 
 Spire Id:
@@ -51,7 +51,9 @@ def build_game():
     # --- Core game data ---
     # suspects/locations/items should be filled with the full set of names.
     # main.py will later choose the secret envelope by picking an INDEX into each set.
-    pass
+    suspects= ["Ryan", "Seta", "Stacey", "Victoria", "Charlotte"]
+    locations = ["Library", "Kitchen", "Study", "Garden", "Laboratory"]
+    items = ["Knife", "Candle", "Letter", "Key", "Map", "Poison"]
 
     # Randomize displayed order each run.
     # This makes the menu look different each time the program is run.
@@ -64,13 +66,16 @@ def build_game():
     # Per spec: player gets 4 attempts total.
     # main.py copies this into its variable "attempts".
     # max_attempts = 4
-    pass
+    max_attempts = 4
     
     # Randomize starting clue tokens (resource system).
     # main.py copies this into its variable "tokens".
     # Adjust this range if you want tokens to be more/less common.
-    clue_tokens = random.randint(1, 2)
-    pass
+    clue_tokens = random.randint(1, 3)
+    return suspects, locations, items, max_attempts, clue_tokens
+
+   
+    
 
 
 def display_game_state(suspects, locations, items, pos_suspect, pos_location, pos_item, attempts, tokens):
@@ -103,7 +108,23 @@ def display_game_state(suspects, locations, items, pos_suspect, pos_location, po
     # Only print options that are still marked as possible in the notebook.
     # NOTE: We display with numbering starting at 1 for user friendliness,
     # even though the internal indexes start at 0.
-    pass
+    print("Suspects:")
+    for i in range(len(suspects)):
+        if pos_suspect[i]:
+            print(f"{i+1}. {suspects[i]}")
+
+    print("Locations:")
+    for i in range(len(locations)):
+        if pos_location[i]:
+            print(f"{i+1}. {locations[i]}")
+
+    print("Items:")
+    for i in range(len(items)):
+        if pos_item[i]:
+            print(f"{i+1}. {items[i]}")
+    print(f"Attempts left: {attempts}")
+    print(f"Clue tokens left: {tokens}")
+
 
 
 def evaluate_guess(guess_idx, solution_idx):
@@ -249,7 +270,12 @@ def use_clue_token(possible_list, solution_index):
 
     # If we reach the end without eliminating anything, we couldn't use the token
     # to remove an incorrect option (often because only the correct one remains).
-    pass
+    for i in range(len(possible_list)):
+        if possible_list[i] and i != solution_index:
+            possible_list[i] = False
+            return True
+    return False
+
 
 
 def best_clue_category(pos_suspect, pos_location, pos_item):
@@ -286,3 +312,4 @@ def best_clue_category(pos_suspect, pos_location, pos_item):
 
     # Return the category number with the most remaining possibilities.
     pass
+
