@@ -305,11 +305,16 @@ def best_clue_category(pos_suspect, pos_location, pos_item):
             2 means "items"
     """
     # Count how many suspects are still possible.
-
+    suspect_count = sum(pos_suspect)
     # Count how many locations are still possible.
-
+    location_count = sum(pos_location)
     # Count how many items are still possible.
-
+    item_count = sum(pos_item)
     # Return the category number with the most remaining possibilities.
-    pass
-
+    # If there is a tie, return the category with the lowest number (suspects > locations > items).
+    if suspect_count >= location_count and suspect_count >= item_count:
+        return 0  # Suspects
+    elif location_count >= suspect_count and location_count >= item_count:
+        return 1  # Locations
+    else:
+        return 2  # Items
